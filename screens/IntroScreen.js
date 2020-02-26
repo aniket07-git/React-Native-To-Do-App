@@ -51,6 +51,10 @@ export default class IntroScreen extends React.Component {
         };
     }
 
+    static navigationOptions = {
+        title:"Splash Screen",
+        headerShown: false
+    };
     //onDone={Handler for done button click}
     Done_Method = () => {
         this.setState({ Show_HomeScreen: true })
