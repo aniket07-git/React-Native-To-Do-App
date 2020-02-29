@@ -6,6 +6,7 @@ import {
     View,
     Text,
     StatusBar,
+    Button,
     Image
 } from 'react-native';
 import AppIntroSlider from 'react-native-app-intro-slider';
@@ -47,64 +48,62 @@ export default class IntroScreen extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            Show_HomeScreen: false
+            showRealApp: false,
+            //To show the main page of the app
         };
     }
 
     static navigationOptions = {
-        title:"Splash Screen",
+        title:"Intro Screen",
         headerShown: false
     };
-    //onDone={Handler for done button click}
-    Done_Method = () => {
-        this.setState({ Show_HomeScreen: true })
-    }
 
-    //onSkip={Handler for skip button click}
-    Skip_Screen = () => {
-        this.setState({ Show_HomeScreen: true })
-    }
+
+
+    _onDone = () => {
+        this.setState({ showRealApp: true });
+    };
+    _onSkip = () => {
+        this.setState({ showRealApp: true });
+    };
 
     //renderItem={Provide item to render like FlatList}
-    Render_Item = ({ item }) => {
+    _renderItem = ({ item }) => {
         return (
-            <View style = {{
-                flex:1,
+            <View style={{
+                flex: 1,
                 backgroundColor: item.backgroundColor,
                 justifyContent: 'space-around',
                 alignItems: "center"
-            }}> 
+            }}>
                 <Text style={styles.title}>{item.title}</Text>
-                <Image style={styles.imageCont} source = {item.image} />
+                <Image style={styles.imageCont} source={item.image} />
                 <Text style={styles.textCss}>{item.text}</Text>
-                
+
             </View>
         );
     }
 
     render() {
-       
-        if (this.state.Show_HomeScreen) {
-            return (
-                <View style = {styles.container}>
-                    <Text style={styles.textCss}>This is the Home Screen</Text>
-                </View>
-            );
-        }
-        else {
+        //If false show the Intro Slides
+        if (this.state.showRealApp) {
+            //Real Application
+            return this.props.navigation.replace('SignIn');
+          }
+          else {
+            //Intro slides
             return (
                 <AppIntroSlider
                     slides={slides}
-                    renderItem={this.Render_Item}
+                    renderItem={this._renderItem}
+                    onDone={this._onDone}
                     showSkipButton={true}
-                    skip={this.Skip_Screen}
-                    finish={this.Done_Method}
+                    onSkip={this._onSkip}
                 />
             );
         }
     }
 }
-
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -112,23 +111,23 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         padding: 50,
         backgroundColor: '#fff'
-        
+
     },
-    title:{
-        fontSize:24,
+    title: {
+        fontSize: 24,
         fontWeight: "bold",
         color: '#fff'
     },
-    textCss:{
-        fontSize:20,
+    textCss: {
+        fontSize: 20,
         fontWeight: "500",
         color: '#fff',
         //paddingVertical:50
         paddingBottom: 50
     },
-    imageCont:{
+    imageCont: {
         //flex: 1,
         width: 350,
-        height:350
+        height: 350
     }
 });

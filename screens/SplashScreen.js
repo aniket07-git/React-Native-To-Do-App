@@ -33,7 +33,7 @@ export default class SplashScreen extends React.Component {
         var that = this;
         setTimeout(function () {
             that.Hide_Splash_Screen();
-        }, 8000);
+        }, 1000);
     }
 
 

@@ -27,12 +27,13 @@ import {
 //import * as firebase from 'firebase';
 
 
-//import all screens
-
-
-
-
 export default class HomeScreen extends React.Component{
+  
+  static navigationOptions = {
+    title:"HomeScreen",
+    headerShown: false
+};
+  
   render(){
     return (
      
