@@ -89,13 +89,13 @@ export default class SigninScreen extends React.Component {
           />
         </KeyboardAvoidingView>
       
-          <TouchableOpacity style={styles.button}  onPress={()=>{this.props.navigation.replace("Home")}}>
+          <TouchableOpacity style={styles.button}  onPress={()=>{this.props.navigation.push("NewHome")}}>
             <Text style={styles.buttonText}>Sign Up</Text>
           </TouchableOpacity>
         
         <View style={styles.footer}>
           <Text style={{fontSize:17,color:"#AE1438",fontWeight:"500"}}>Already have an account?</Text>
-          <TouchableOpacity onPress={() => { this.props.navigation.navigate("SignIn") }}>
+          <TouchableOpacity onPress={() => { this.props.navigation.goBack() }}>
             <Text style={{fontSize:18,fontWeight:"bold",color:"#AE1438"}}>SignIn</Text>
           </TouchableOpacity>
         </View>

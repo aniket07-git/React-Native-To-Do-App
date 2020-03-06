@@ -81,7 +81,7 @@ export default class SigninScreen extends React.Component {
         <Button
           title="LOGIN"
           style={styles.buttonCont}
-          onPress={()=>this.props.navigation.replace("Home")}
+          onPress={()=>this.props.navigation.replace("NewHome")}
         />
         
         </KeyboardAvoidingView>

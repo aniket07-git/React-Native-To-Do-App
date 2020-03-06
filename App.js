@@ -15,35 +15,20 @@ import {
   Text,
   StatusBar,
 } from 'react-native';
-import { createAppContainer } from 'react-navigation';
-import { createStackNavigator } from 'react-navigation-stack';
-import {
-  Header,
-  LearnMoreLinks,
-  Colors,
-  DebugInstructions,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
 
-import IntroScreen from './screens/IntroScreen';
-import SplashScreen from './screens/SplashScreen';
-import HomeScreen from './screens/HomeScreen';
-import SigninScreen from './screens/SigninScreen';
-import SignupScreen from './screens/SignupScreen';
+import ThemeProvider from './themes';
 
+import AppNavigator from './src/Navigation';
 
-const MainNavigator = createStackNavigator(
-  {
-    Splash_Screen: { screen: SplashScreen },
-    Intro_Screen: { screen: IntroScreen },
-    SignIn: { screen: SigninScreen },
-    SignUp: { screen: SignupScreen },
-    Home: { screen: HomeScreen },
-  },
-  {
-    initialRouteName: "Splash_Screen",
+class App extends React.Component {
+  render() {
+    return (
+      <ThemeProvider>
+        <AppNavigator />
+      </ThemeProvider>
+    );
+
   }
-)
+}
 
-const App = createAppContainer(MainNavigator);
 export default App;
