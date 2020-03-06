@@ -19,7 +19,7 @@ import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 import { createBottomTabNavigator } from 'react-navigation-tabs';
 
-import {theme} from '../themes';
+import { theme } from '../themes';
 import { HomeScreen, ProfileScreen, SearchScreen, SettingsScreen } from '../src/scenes';
 import TabBar from '../TabBar';
 import TabIcon from '../TabBar/TabIcon'
@@ -78,7 +78,7 @@ const tabBarConfig = {
   },
 };
 
-const Navigator =  createBottomTabNavigator(tabBar, tabBarConfig);
+const Navigator = createBottomTabNavigator(tabBar, tabBarConfig);
 
 const MainNavigator = createStackNavigator(
   {
@@ -86,33 +86,18 @@ const MainNavigator = createStackNavigator(
     Intro_Screen: { screen: IntroScreen },
     SignIn: { screen: SigninScreen },
     SignUp: { screen: SignupScreen },
-    NewHome: {screen: Navigator}
+    NewHome: { screen: Navigator }
   },
   {
     initialRouteName: "Splash_Screen",
-    //initialRouteKey: "NewHome"
     headerMode: 'none',
-  navigationOptions: {
-    headerVisible: false,
-  }
-  }
-)
-
-/*const MainNavigator = createStackNavigator(
-  {
-    Splash_Screen: { screen: SplashScreen },
-    Intro_Screen: { screen: IntroScreen },
-    SignIn: { screen: SigninScreen },
-    SignUp: { screen: SignupScreen },
-    Home: { screen: HomeScreen },
-  },
-  {
-    initialRouteName: "Splash_Screen",
+    navigationOptions: {
+      headerVisible: false,
+    }
   }
 )
 
-const Navigation = createAppContainer(MainNavigator);
-export default Navigation;*/
+
 
 const AppNavigator = createAppContainer(MainNavigator);
 export default AppNavigator;

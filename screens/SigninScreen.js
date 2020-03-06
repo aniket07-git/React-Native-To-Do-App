@@ -63,9 +63,9 @@ export default class SigninScreen extends React.Component {
           />
         </View>
         <KeyboardAvoidingView
-        style={{marginBottom:20}}
-        behavior="position"
-        enabled
+          style={{ marginBottom: 20 }}
+          behavior="position"
+          enabled
         >
           <TextInput style={styles.inputCont}
             placeholder="Email"
@@ -76,22 +76,22 @@ export default class SigninScreen extends React.Component {
             placeholderTextColor="#fff"
             secureTextEntry={true}
           />
-        
-        
-        <Button
-          title="LOGIN"
-          style={styles.buttonCont}
-          onPress={()=>this.props.navigation.replace("NewHome")}
-        />
-        
+
+
+          <Button
+            title="LOGIN"
+            style={styles.buttonCont}
+            onPress={() => this.props.navigation.replace("NewHome")}
+          />
+
         </KeyboardAvoidingView>
         <View style={styles.footer}>
-        <TouchableOpacity
-          onPress={() => { this.props.navigation.navigate("SignUp") }}>
-          <Text
-            style={{ marginVertical: 100, color: "#2B2B52", fontWeight: 'bold', fontSize: 20 }}
-          >Don't have an account? SignUp</Text>
-        </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => { this.props.navigation.navigate("SignUp") }}>
+            <Text
+              style={{ marginVertical: 100, color: "#2B2B52", fontWeight: 'bold', fontSize: 20 }}
+            >Don't have an account? SignUp</Text>
+          </TouchableOpacity>
         </View>
 
       </View>
@@ -112,12 +112,12 @@ const styles = StyleSheet.create({
     backgroundColor: "#F5BCBA",
 
   },
-  childCont:{
+  childCont: {
     flexGrow: 1,
     alignItems: 'center',
     justifyContent: 'center',
     marginBottom: 40
-   //marginVertical: 100
+    //marginVertical: 100
   },
   textCont: {
 
@@ -146,13 +146,13 @@ const styles = StyleSheet.create({
     marginVertical: 10,
   },
   buttonCont: {
-    color:"red",
+    color: "red",
     width: 200,
     height: 200
   },
-  
-  footer:{
+
+  footer: {
     //flexGrow: 1
-    marginBottom:50
+    marginBottom: 50
   }
 });

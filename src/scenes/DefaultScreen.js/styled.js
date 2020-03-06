@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 import LinearGradient from 'react-native-linear-gradient';
 
-import {screenWidth, screenHeight} from '../../Utils/Dimensions';
+import { screenWidth, screenHeight } from '../../Utils/Dimensions';
 
 
 const Container = styled.View`
