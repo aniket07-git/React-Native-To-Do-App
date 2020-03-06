@@ -25,7 +25,6 @@ import TabBar from '../TabBar';
 import TabIcon from '../TabBar/TabIcon'
 import IntroScreen from '../screens/IntroScreen';
 import SplashScreen from '../screens/SplashScreen';
-//import HomeScreen from '../screens/HomeScreen';
 import SigninScreen from '../screens/SigninScreen';
 import SignupScreen from '../screens/SignupScreen';
 
