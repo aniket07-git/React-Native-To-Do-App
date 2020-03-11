@@ -24,7 +24,7 @@ class App extends React.Component {
   render() {
     return (
       <ThemeProvider>
-        <AppNavigator />
+        <AppNavigator/>
       </ThemeProvider>
     );
 

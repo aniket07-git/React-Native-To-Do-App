@@ -34,6 +34,7 @@ const tabBar = {
     navigationOptions: {
       tabBarLabel: 'Home',
       tabBarIcon: props => <TabIcon iconName="ios-home" {...props} />,
+      
     },
   },
   Search: {
@@ -43,11 +44,11 @@ const tabBar = {
       tabBarIcon: props => <TabIcon iconName="ios-search" {...props} />,
     },
   },
-  Profile: {
+  Task: {
     screen: ProfileScreen,
     navigationOptions: {
       tabBarLabel: 'Profile',
-      tabBarIcon: props => <TabIcon iconName="ios-person" {...props} />,
+      tabBarIcon: props => <TabIcon iconName="ios-add-circle" {...props} />,
     },
   },
   Settings: {

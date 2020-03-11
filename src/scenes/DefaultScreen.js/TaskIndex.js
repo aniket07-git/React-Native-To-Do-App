@@ -6,21 +6,21 @@ import { theme } from '../../../themes';
 
 import { Container, Gradient, Title } from './styled';
 import IntroScreen from '../../../screens/IntroScreen';
-import Tickindex from '../../../screens/TabTask/Tickindex';
-import { View, SafeAreaView} from 'react-native';
-//import {ToDoItem} from '../../../screens/TabTask/';
+import TabTaskScreen from '../../../screens/TabTask/TabTaskScreen';
+import { View , SafeAreaView} from 'react-native';
+//import {ToDoItem} from '../../../screens/TabTask/TickBoxes'
 
-const DefaultScreen = ({ name }) => (
+const TabTask = ({ name }) => (
     <SafeAreaView style={{flex:1}}>   
-      <Tickindex/>
+      <TabTaskScreen/>
     </SafeAreaView>
   );
 
   
-  DefaultScreen.propTypes = {
+  TabTask.propTypes = {
     name: PropTypes.string.isRequired,
   };
 
 
-  export default DefaultScreen;
+  export default TabTask;
   
