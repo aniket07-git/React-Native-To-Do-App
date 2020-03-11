@@ -13,9 +13,8 @@ import {
 import { createMaterialTopTabNavigator } from 'react-navigation-tabs';
 import {createAppContainer} from 'react-navigation';
 import AddTask from './AddTask';
-import TickBoxes from './TickBoxes';
 import Tickindex from './Tickindex';
-import { enableScreens } from 'react-native-screens';
+
 
 
 const TabTaskNavigator = createMaterialTopTabNavigator(

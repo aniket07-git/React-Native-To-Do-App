@@ -7,22 +7,42 @@ import {
     View,
     Text,
     StatusBar,
-    Image
+    Image,
+    Button,
+    KeyboardAvoidingView,
+    TouchableOpacity
 } from 'react-native';
-
-import { createMaterialTopTabNavigator } from 'react-navigation-tabs';
-import SafeAreaView from 'react-native-safe-area-view';
-
-
-
+import { TextInput } from 'react-native-gesture-handler';
 
 export default class AddTask extends React.Component {
 
     render() {
-        return(
+        return (
+            
             <View style={styles.container}>
-                <Text>Add Task Here</Text>
+                <View style={styles.childCont_1}>
+                    <Text style={styles.TitleTextCont}>Add Notes</Text>
+                </View>
+                <View style={styles.childCont_2}>
+                    <TextInput
+                     multiline={true}
+                     editable={true}
+                     placeholder="Write your Notes here"
+                     style={styles.TextInputCont}
+                    />
+                    
+                </View>
+                <View style={styles.childCont_3}>
+                    <TouchableOpacity
+                        style={styles.button}
+                    >
+                     <Text style={styles.buttonText}>Save</Text>
+                    </TouchableOpacity>
+                </View>
+
             </View>
+        
+
         );
     }
 }
@@ -30,11 +50,51 @@ export default class AddTask extends React.Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        alignItems: "center",
-        justifyContent: "center",
-        
-        backgroundColor: "#fff",
-
+        backgroundColor: "#EAF0F1",
     },
+    childCont_1:{
+        flex: 0.2
+    },
+    childCont_2:{
+        flex:3
+    },
+    childCont_3:{
+        flex:0.3,
+        alignItems:"center",
+        marginBottom: 20
+    },
+    TitleTextCont: {
+        fontSize: 22,
+        marginVertical: 4,
+        paddingHorizontal: 15,
+        color: "#4C4B4B",
+        fontWeight: "bold",
+    },
+    TextInputCont: {
+        paddingHorizontal: 15,
+        fontSize: 18,
+        fontWeight: "300",
+        color: "#000",
+        borderRadius: 25,
+        
+    },
+    button: {
+        width: 100,
+        backgroundColor: "#74B9FF",
+        borderRadius: 25,
+        paddingVertical: 10,
+        alignItems: "center",
+        justifyContent:"center"
+    },
+    buttonText: {
+        fontSize: 18,
+        fontWeight: 'bold',
+        color: "#fff",
+        textAlign: "center",
+
+    }
+    
 });
+   
+  
 
