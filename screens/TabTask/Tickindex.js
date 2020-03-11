@@ -102,6 +102,12 @@ export default class Tickindex extends React.Component {
   const [doneState, setDone] = useState(done);
   const onCheck = () => {
     setDone(!doneState);
+    db.ref('/todos').update({
+      [id]: {
+        todoItem: name,
+        done: !doneState,
+      },
+    });
   };
   return (
     <View style={styles.todoItem}>
