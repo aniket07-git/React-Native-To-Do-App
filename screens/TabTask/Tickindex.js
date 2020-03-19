@@ -6,6 +6,7 @@ import * as firebase from 'firebase'
 import {
   //SafeAreaView,
   StyleSheet,
+  SafeAreaView,
   ScrollView,
   View,
   Text,
@@ -110,7 +111,7 @@ export default class Tickindex extends React.Component {
     });
   };
   return (
-    <View style={styles.todoItem}>
+    <SafeAreaView style={styles.todoItem}>
       <CheckBox
         checkBoxColor="#0ABDE3"
         onClick={onCheck}
@@ -120,7 +121,7 @@ export default class Tickindex extends React.Component {
       <Text style={[styles.todoText, {opacity: doneState ? 0.3 : 1}]}>
         {name}
       </Text>
-    </View>
+    </SafeAreaView>
   );
 };
 

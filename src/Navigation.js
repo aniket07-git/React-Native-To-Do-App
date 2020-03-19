@@ -27,6 +27,8 @@ import IntroScreen from '../screens/IntroScreen';
 import SplashScreen from '../screens/SplashScreen';
 import SigninScreen from '../screens/SigninScreen';
 import SignupScreen from '../screens/SignupScreen';
+import TabTaskNavigator from '../screens//TabTask//TabTaskScreen';
+import TabTask from '../src/scenes/DefaultScreen.js/TaskIndex';
 
 const tabBar = {
   Home: {
@@ -45,7 +47,7 @@ const tabBar = {
     },
   },
   Task: {
-    screen: ProfileScreen,
+    screen: TabTaskNavigator,
     navigationOptions: {
       tabBarLabel: 'Profile',
       tabBarIcon: props => <TabIcon iconName="ios-add-circle" {...props} />,
@@ -86,7 +88,8 @@ const MainNavigator = createStackNavigator(
     Intro_Screen: { screen: IntroScreen },
     SignIn: { screen: SigninScreen },
     SignUp: { screen: SignupScreen },
-    NewHome: { screen: Navigator }
+    NewHome: { screen: Navigator },
+    //Screen: {screen: TabTask}
   },
   {
     initialRouteName: "Splash_Screen",

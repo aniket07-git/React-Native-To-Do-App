@@ -195,6 +195,9 @@ dependencies {
     // For WebP support, without animations
     implementation 'com.facebook.fresco:webpsupport:2.0.0'
 
+    //For React Native CardView
+    implementation project(':react-native-cardview')
+
 
     if (enableHermes) {
         def hermesPath = "../../node_modules/hermes-engine/android/";
