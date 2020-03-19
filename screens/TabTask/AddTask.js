@@ -209,7 +209,11 @@ const styles = StyleSheet.create({
         padding: 25,
         //width:'50%',
         height:200,
+        shadowOffset:{width:2,height:2},
+        shadowColor:"#929292",
+        shadowOpacity:1,
         borderRadius: 7,
+       backgroundColor:"#F5F5F5"
         //flexWrap:"wrap"
         
     },
