@@ -1,152 +1,271 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow
- */
-
-import * as React from 'react';
+import React from 'react';
 import {
-  SafeAreaView,
-  StyleSheet,
-  ScrollView,
   View,
   Text,
-  StatusBar,
-  KeyboardAvoidingView,
+  TouchableOpacity,
   TextInput,
-  Image
+  Platform,
+  StyleSheet,
+  StatusBar,
 } from 'react-native';
+import * as Animatable from 'react-native-animatable';
+import LinearGradient from 'react-native-linear-gradient';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import Feather from 'react-native-vector-icons/Feather';
+import AsyncStorage from '@react-native-community/async-storage';
 
-import {
-  Header,
-  LearnMoreLinks,
-  Colors,
-  DebugInstructions,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+const SignUpScreen = props => {
+  const [data, setData] = React.useState({
+    name: '',
+    email: '',
+    password: '',
+    check_textInputChange: false,
+    namecheck_textInputChange: false,
+    secureTextEntry: true,
+  });
 
-//import * as firebase from 'firebase';
-
-
-
-
-
-
-export default class SigninScreen extends React.Component {
-
-
-  constructor(props) {
-    super(props);
-    this.state = {
-      name: "",
-      email: "",
-      password: ""
+  const textInputChange = val => {
+    if (val.length !== 0) {
+      setData({
+        ...data,
+        email: val,
+        check_textInputChange: true,
+      });
+    } else {
+      setData({
+        ...data,
+        email: val,
+        check_textInputChange: false,
+      });
     }
-  }
-
-
-  static navigationOptions = {
-    title: "SignUp",
-    headerShown: false
+  };
+  const nameTextInputChange = val => {
+    if (val.length !== 0) {
+      setData({
+        ...data,
+        name: val,
+        namecheck_textInputChange: true,
+      });
+    } else {
+      setData({
+        ...data,
+        name: val,
+        namecheck_textInputChange: false,
+      });
+    }
   };
 
+  const handlePasswordChange = val => {
+    setData({
+      ...data,
+      password: val,
+    });
+  };
 
-  render() {
-    return (
+  const updateSecureTextEntry = () => {
+    setData({
+      ...data,
+      secureTextEntry: !data.secureTextEntry,
+    });
+  };
 
-      <View style={styles.container}>
+  //Post data to server
+  const sendData = async () => {
+    // class=>console.log(this.state.name, this.state.email, this.state.password);
+    // class=>console.log(data.name, data.email, data.password);
+    fetch('https://profferapp.herokuapp.com/api/v1/auth/register', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        name: data.name,
+        email: data.email,
+        password: data.password,
+      }),
+    })
+      .then(response => response.json())
+      .then(async value => {
+        console.log(value);
+        try {
+          await AsyncStorage.setItem('token', value.token);
+          props.navigation.replace('NewHome');
+        } catch (e) {
+          console.log('ERROR', e);
+        }
+      });
+  };
 
-        <View style={styles.TopView}>
-          <Text
-            style={{ fontSize: 32, color: "#B83227", fontWeight: "500" }}
-          >Register Here!</Text>
+  return (
+    <View style={styles.container}>
+      <StatusBar backgroundColor="#009387" barStyle="light-content" />
+      <View style={styles.header}>
+        <Text style={styles.text_header}>Welcome!</Text>
+      </View>
+      <Animatable.View animation="fadeInUpBig" style={styles.footer}>
+        <Text style={styles.text_footer}>Full Name</Text>
+        <View style={styles.action}>
+          <FontAwesome name="user-o" color="#05375a" size={20} />
+          <TextInput
+            placeholder="Your Name"
+            placeholderTextColor="#666666"
+            style={styles.textInput}
+            autoCapitalize="none"
+            onChangeText={val => nameTextInputChange(val)}
+          />
+          {data.namecheck_textInputChange ? (
+            <Animatable.View animation="bounceIn">
+              <Feather name="check-circle" color="green" size={20} />
+            </Animatable.View>
+          ) : null}
         </View>
-        <View>
-          <Image
-            style={styles.imageCont}
-            source={require('../assets/rocket.gif')}
+
+        <Text style={[styles.text_footer, {marginTop: 32}]}>Email</Text>
+        <View style={styles.action}>
+          <FontAwesome name="envelope-o" color="#05375a" size={20} />
+          <TextInput
+            placeholder="Your Email"
+            placeholderTextColor="#666666"
+            style={styles.textInput}
+            autoCapitalize="none"
+            onChangeText={val => textInputChange(val)}
           />
+          {data.check_textInputChange ? (
+            <Animatable.View animation="bounceIn">
+              <Feather name="check-circle" color="green" size={20} />
+            </Animatable.View>
+          ) : null}
         </View>
-
-        <KeyboardAvoidingView
-          behavior="position"
-          enabled>
-          <TextInput style={styles.inputCont}
-            placeholder="Name"
-            placeholderTextColor="#fff"
+        <Text style={[styles.text_footer, {marginTop: 32}]}>Paasword</Text>
+        <View style={styles.action}>
+          <FontAwesome name="lock" color="#05375a" size={20} />
+          <TextInput
+            placeholder="Your Password"
+            placeholderTextColor="#666666"
+            style={styles.textInput}
+            secureTextEntry={data.secureTextEntry ? true : false}
+            autoCapitalize="none"
+            onChangeText={val => handlePasswordChange(val)}
           />
-          <TextInput style={styles.inputCont}
-            placeholder="Email"
-            placeholderTextColor="#fff"
-          />
-          <TextInput style={styles.inputCont}
-            placeholder="Password"
-            placeholderTextColor="#fff"
-            secureTextEntry={true}
-          />
-        </KeyboardAvoidingView>
-
-        <TouchableOpacity style={styles.button} onPress={() => { this.props.navigation.push("NewHome") }}>
-          <Text style={styles.buttonText}>Sign Up</Text>
-        </TouchableOpacity>
-
-        <View style={styles.footer}>
-          <Text style={{ fontSize: 17, color: "#AE1438", fontWeight: "500" }}>Already have an account?</Text>
-          <TouchableOpacity onPress={() => { this.props.navigation.goBack() }}>
-            <Text style={{ fontSize: 18, fontWeight: "bold", color: "#AE1438" }}>SignIn</Text>
+          <TouchableOpacity onPress={updateSecureTextEntry}>
+            {data.secureTextEntry ? (
+              <Feather name="eye-off" color="grey" size={20} />
+            ) : (
+              <Feather name="eye" color="grey" size={20} />
+            )}
           </TouchableOpacity>
         </View>
+        <View style={styles.button}>
+          <TouchableOpacity
+            onPress={() => sendData()}
+            style={[
+              styles.signIn,
+              {
+                borderColor: '#009387',
+                borderWidth: 1,
+                marginTop: 15,
+              },
+            ]}>
+            <LinearGradient
+              colors={['#08d4c4', '#01ab9d']}
+              style={styles.signIn}>
+              <Text style={[styles.textSign, {color: '#fff'}]}>Sign Up</Text>
+            </LinearGradient>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => props.navigation.navigate('SignIn')}
+            style={[
+              styles.signIn,
+              {
+                borderColor: '#009387',
+                borderWidth: 1,
+                marginTop: 15,
+              },
+            ]}>
+            <Text
+              style={[
+                styles.textSign,
+                {
+                  color: '#009387',
+                },
+              ]}>
+              Sign In
+            </Text>
+          </TouchableOpacity>
+        </View>
+      </Animatable.View>
+    </View>
+  );
+};
 
-      </View>
-
-    );
-  }
-}
+export default SignUpScreen;
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: "#F5BCBA"
+    backgroundColor: '#009387',
   },
-  TopView: {
-    fontWeight: "bold"
-  },
-  inputCont: {
-    width: 250,
-    height: 50,
-    backgroundColor: "#EA7773",
-    marginVertical: 10,
-    borderRadius: 25,
-    paddingHorizontal: 10,
-    fontWeight: 'bold',
-    fontSize: 18
-  },
-  imageCont: {
-    height: 350,
-    width: 350
-  },
-  button: {
-    width: 140,
-    backgroundColor: "#EA7773",
-    borderRadius: 25,
-    marginVertical: 10,
-    paddingVertical: 16,
-  },
-  buttonText: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: "#fff",
-    textAlign: "center",
-
+  header: {
+    flex: 1,
+    justifyContent: 'flex-end',
+    paddingHorizontal: 20,
+    paddingBottom: 50,
   },
   footer: {
-    marginVertical: 15,
-    alignItems: "flex-end",
-    flexDirection: "row"
-  }
+    flex: 3,
+    backgroundColor: '#fff',
+    borderTopLeftRadius: 30,
+    borderTopRightRadius: 30,
+    paddingHorizontal: 20,
+    paddingVertical: 30,
+  },
+  text_header: {
+    color: '#fff',
+    fontWeight: 'bold',
+    fontSize: 30,
+  },
+  text_footer: {
+    color: '#05375a',
+    fontSize: 18,
+  },
+  action: {
+    flexDirection: 'row',
+    marginTop: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: '#f2f2f2',
+    paddingBottom: 5,
+  },
+  actionError: {
+    flexDirection: 'row',
+    marginTop: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: '#FF0000',
+    paddingBottom: 5,
+  },
+  textInput: {
+    flex: 1,
+    marginTop: Platform.OS === 'ios' ? 0 : -12,
+    paddingLeft: 10,
+    color: '#05375a',
+  },
+  errorMsg: {
+    color: '#FF0000',
+    fontSize: 14,
+  },
+  button: {
+    alignItems: 'center',
+    marginTop: 50,
+  },
+  signIn: {
+    width: '100%',
+    height: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 10,
+  },
+  textSign: {
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
 });

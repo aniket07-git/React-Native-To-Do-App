@@ -34,7 +34,7 @@ const TabTaskNavigator = createMaterialTopTabNavigator(
 
     },
     {
-        initialRouteName: 'AddTask',
+        initialRouteName: 'TickBoxes',
         //tabBarPosition: 'top'
         //tabBarComponent: () => null
          

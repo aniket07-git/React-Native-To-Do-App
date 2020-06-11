@@ -1,158 +1,247 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow
- */
-
-import * as React from 'react';
+import React from 'react';
 import {
-  SafeAreaView,
-  StyleSheet,
-  ScrollView,
   View,
   Text,
-  StatusBar,
-  TextInput,
-  Image,
-  KeyboardAvoidingView,
   TouchableOpacity,
-  Button
-
+  TextInput,
+  Platform,
+  StyleSheet,
+  StatusBar,
+  Alert,
 } from 'react-native';
+import * as Animatable from 'react-native-animatable';
+import LinearGradient from 'react-native-linear-gradient';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import Feather from 'react-native-vector-icons/Feather';
+import AsyncStorage from '@react-native-community/async-storage';
 
-import {
-  Header,
-  LearnMoreLinks,
-  Colors,
-  DebugInstructions,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+const SignInScreen = props => {
+  const [data, setData] = React.useState({
+    email: '',
+    password: '',
+    check_textInputChange: false,
+    secureTextEntry: true,
+  });
 
-//import * as firebase from 'firebase';
-
-
-
-export default class SigninScreen extends React.Component {
-
-  constructor(props) {
-    super(props);
-    this.state = {
-      email: "",
-      password: ""
+  const textInputChange = val => {
+    if (val.length !== 0) {
+      setData({
+        ...data,
+        email: val,
+        check_textInputChange: true,
+      });
+    } else {
+      setData({
+        ...data,
+        email: val,
+        check_textInputChange: false,
+      });
     }
-  }
-
-
-  static navigationOptions = {
-    title: "SignIn",
-    headerShown: false
   };
 
-  render() {
-    return (
+  const handlePasswordChange = val => {
+    setData({
+      ...data,
+      password: val,
+    });
+  };
 
+  const updateSecureTextEntry = () => {
+    setData({
+      ...data,
+      secureTextEntry: !data.secureTextEntry,
+    });
+  };
 
-      <View style={styles.container}>
+  //Post data to server
+  const sendData = async () => {
+    // class=>console.log(this.state.name, this.state.email, this.state.password);
+    // class=>console.log(data.name, data.email, data.password);
+    fetch('https://profferapp.herokuapp.com/api/v1/auth/login', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        email: data.email,
+        password: data.password,
+      }),
+    })
+      .then(response => response.json())
+      .then(async value => {
+        console.log(value);
+        try {
+          await AsyncStorage.setItem('token', value.token);
+          props.navigation.replace('NewHome');
+        } catch (e) {
+          console.log('ERROR', e);
+        }
+      });
+  };
 
-        <View style={styles.childCont}>
-          <Text style={styles.textCont}>Welcome Back!</Text>
-          <Image style={styles.logoCont}
-            source={require('../assets/log.gif')}
+  return (
+    <View style={styles.container}>
+      <StatusBar backgroundColor="#009387" barStyle="light-content" />
+      <View style={styles.header}>
+        <Text style={styles.text_header}>Welcome!</Text>
+      </View>
+      <Animatable.View animation="fadeInUpBig" style={styles.footer}>
+        <Text style={styles.text_footer}>Email</Text>
+        <View style={styles.action}>
+          <FontAwesome name="envelope-o" color="#05375a" size={20} />
+          <TextInput
+            placeholder="Your Email"
+            placeholderTextColor="#666666"
+            style={styles.textInput}
+            autoCapitalize="none"
+            onChangeText={val => textInputChange(val)}
           />
+          {data.check_textInputChange ? (
+            <Animatable.View animation="bounceIn">
+              <Feather name="check-circle" color="green" size={20} />
+            </Animatable.View>
+          ) : null}
         </View>
-        <KeyboardAvoidingView
-          style={{ marginBottom: 20 }}
-          behavior="position"
-          enabled
-        >
-          <TextInput style={styles.inputCont}
-            placeholder="Email"
-            placeholderTextColor="#fff"
+        <Text style={[styles.text_footer, {marginTop: 32}]}>Paasword</Text>
+        <View style={styles.action}>
+          <FontAwesome name="lock" color="#05375a" size={20} />
+          <TextInput
+            placeholder="Your Password"
+            placeholderTextColor="#666666"
+            style={styles.textInput}
+            secureTextEntry={data.secureTextEntry ? true : false}
+            autoCapitalize="none"
+            onChangeText={val => handlePasswordChange(val)}
           />
-          <TextInput style={styles.inputCont}
-            placeholder="Password"
-            placeholderTextColor="#fff"
-            secureTextEntry={true}
-          />
-
-
-          <Button
-            title="LOGIN"
-            style={styles.buttonCont}
-            onPress={() => this.props.navigation.replace("NewHome")}
-          />
-
-        </KeyboardAvoidingView>
-        <View style={styles.footer}>
-          <TouchableOpacity
-            onPress={() => { this.props.navigation.navigate("SignUp") }}>
-            <Text
-              style={{ marginVertical: 100, color: "#2B2B52", fontWeight: 'bold', fontSize: 20 }}
-            >Don't have an account? SignUp</Text>
+          <TouchableOpacity onPress={updateSecureTextEntry}>
+            {data.secureTextEntry ? (
+              <Feather name="eye-off" color="grey" size={20} />
+            ) : (
+              <Feather name="eye" color="grey" size={20} />
+            )}
           </TouchableOpacity>
         </View>
+        <View style={styles.button}>
+          <TouchableOpacity
+            onPress={() => sendData()}
+            style={[
+              styles.signIn,
+              {
+                borderColor: '#009387',
+                borderWidth: 1,
+                marginTop: 15,
+              },
+            ]}>
+            <LinearGradient
+              colors={['#08d4c4', '#01ab9d']}
+              style={styles.signIn}>
+              <Text style={[styles.textSign, {color: '#fff'}]}>Sign In</Text>
+            </LinearGradient>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => props.navigation.navigate('SignUp')}
+            style={[
+              styles.signIn,
+              {
+                borderColor: '#009387',
+                borderWidth: 1,
+                marginTop: 15,
+              },
+            ]}>
+            <Text
+              style={[
+                styles.textSign,
+                {
+                  color: '#009387',
+                },
+              ]}>
+              Sign Up
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => props.navigation.navigate('ForgotPassword')}>
+            <Text
+              style={[
+                styles.text_footer,
+                {marginTop: 32, color: '#009387', fontWeight: 'bold'},
+              ]}>
+              Forgot Password
+            </Text>
+          </TouchableOpacity>
+        </View>
+      </Animatable.View>
+    </View>
+  );
+};
 
-      </View>
-
-
-
-    );
-  }
-}
-
-
+export default SignInScreen;
 
 const styles = StyleSheet.create({
   container: {
-    flexGrow: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: "#F5BCBA",
-
+    flex: 1,
+    backgroundColor: '#009387',
   },
-  childCont: {
-    flexGrow: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: 40
-    //marginVertical: 100
+  header: {
+    flex: 1,
+    justifyContent: 'flex-end',
+    paddingHorizontal: 20,
+    paddingBottom: 50,
   },
-  textCont: {
-
-    fontSize: 30,
-    fontWeight: 'bold',
-    alignItems: "center",
-    justifyContent: "center",
-    marginBottom: 100,
-    color: "#2C3335"
-
-  },
-  logoCont: {
-
-    width: 100,
-    height: 100,
-    alignItems: "center",
-    justifyContent: "space-around",
-  },
-  inputCont: {
-    fontSize: 18,
-    width: 270,
-    height: 50,
-    backgroundColor: "#EA7773",
-    paddingHorizontal: 15,
-    borderRadius: 25,
-    marginVertical: 10,
-  },
-  buttonCont: {
-    color: "red",
-    width: 200,
-    height: 200
-  },
-
   footer: {
-    //flexGrow: 1
-    marginBottom: 50
-  }
+    flex: 3,
+    backgroundColor: '#fff',
+    borderTopLeftRadius: 30,
+    borderTopRightRadius: 30,
+    paddingHorizontal: 20,
+    paddingVertical: 30,
+  },
+  text_header: {
+    color: '#fff',
+    fontWeight: 'bold',
+    fontSize: 30,
+  },
+  text_footer: {
+    color: '#05375a',
+    fontSize: 18,
+  },
+  action: {
+    flexDirection: 'row',
+    marginTop: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: '#f2f2f2',
+    paddingBottom: 5,
+  },
+  actionError: {
+    flexDirection: 'row',
+    marginTop: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: '#FF0000',
+    paddingBottom: 5,
+  },
+  textInput: {
+    flex: 1,
+    marginTop: Platform.OS === 'ios' ? 0 : -12,
+    paddingLeft: 10,
+    color: '#05375a',
+  },
+  errorMsg: {
+    color: '#FF0000',
+    fontSize: 14,
+  },
+  button: {
+    alignItems: 'center',
+    marginTop: 50,
+  },
+  signIn: {
+    width: '100%',
+    height: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 10,
+  },
+  textSign: {
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
 });
